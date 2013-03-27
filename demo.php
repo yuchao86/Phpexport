@@ -22,7 +22,8 @@
  * @package Phpexport
  * @subpackage DataTable
  */
- 
+
+header("Content-Transfer-Encoding: binary");
 header("Content-Type: application/vnd.ms-execl");
 header("Content-Disposition: attachment; filename=myExcel.xls");
 header("Pragma: no-cache");
@@ -35,5 +36,14 @@ echo "\t\n";
 /*start of second line*/
 echo "this is second line"."\t";
 echo "Hi,pretty girl"."\t";
+echo "\t\n";
+
+// test chinese code
+$me = "北京余超"."\t";
+$carrer = "软件工程师"."\t";
+
+echo mb_convert_encoding($me,'GBK', 'UTF-8');
+echo iconv('UTF-8', 'GBK',$carrer);
+
 echo "\t\n";
 ?>
