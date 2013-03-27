@@ -209,12 +209,14 @@ class Phpexport {
         // code...
         $filename = $this->filename;
         $column_headers = $this->dataTable;
+        $column_headers = self::array_to_string($column_headers);
+
         // Print format-appropriate beginning
         if ($format == 'csv') {
-            $output = fopen('php://output', 'w') or die("Can't open php://output");
+            //$output = fopen('php://output', 'w') or die("Can't open php://output");
             header('Content-Type: application/csv');
             header("Content-Disposition: attachment; filename=".$filename);
-            fputcsv($output, $column_headers);
+            echo $column_headers;
         } else {
             echo '<table><tr><th>';
             echo implode('</th><th>', $column_headers);
@@ -229,12 +231,16 @@ class Phpexport {
      */
     function array_to_string($result) {
         if (empty($result)) {
-            return PhpexportIconv("Not export data");
+            return self::PhpexportIconv("Not export data");
         }
         $data = $this->columns . "\n";
         $size_result = sizeof($result);
+
         for ($i = 0; $i < $size_result; $i++) {
-            $data .= PhpexportIconv($result[$i]['name']) . ',' . i($result[$i]['option']) . "\n";
+          foreach($result[$i] as $value)
+            $data .= self::PhpexportIconv($value) . ",";
+            //$data .= self::PhpexportIconv($result[$i]['name']) . ',' . self::PhpexportIconv($result[$i]['option']) . "\n";
+          $data .= "\n";
         }
         return $data;
     }
